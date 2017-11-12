@@ -1,5 +1,5 @@
 /**
- * javascript:jCafe - WebScript Engineering Toolkit                      (v0.2)
+ * javascript:jCafe - WebScript Engineering Toolkit                     (v0.21)
  *
  * (C) Hypersoft-Systems: U.-S.-A. ~11-12-2017: NOW-TIME
  *                         <hypersoft.systems@gmail.com>
@@ -140,6 +140,9 @@ jCafe.compile = function (name) {
   var tool = actual.builder;
   var module = parentModule(name);
   var singleton = jCafe.build(module, tool, components);
+  // override the first-run-getter, and update the value
+  Object.defineProperty(module, jCafe.child(name),
+    {value: singleton, configurable:true, writable:true, enumerable:true});
   if (singleton === undefined)
      throw "failed to initialize name-space: '"+ name + "'; builder returned undefined";
   return actual.singleton = singleton;
