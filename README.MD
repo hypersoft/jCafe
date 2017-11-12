@@ -48,5 +48,13 @@ jCafe can help you organize your coding environment by allowing you to modulariz
 
 Its no longer a difficult task to shop around for coffee. jCafe can bring you any brand in the world, and our unique flavor-enhancing-process, is sure to bring out the most of the magic in your beans.
 
-There is no ton of complicated APIs to master with jCafe. In fact, you can become a jCafe: master, just by browsing the builtin modules. jCafe is perfect for developing custom browser-suites, where your API structure may be less than desireable. jCafe also plays well with HTML5 features.
+There is no ton of complicated APIs to master with jCafe. In fact, you can
+become a jCafe: master, just by browsing the builtin modules. If that was not 
+enough to get your inner-j-guru-salivating, it might help to know that jCafe is 
+perfect for developing custom browser-suites, where your API structure may be 
+less than desireable. The age old problem of which "browser-api-is-it?", is 
+easily put to rest with jCafe's re-usable, transportable, and shareable jCafe:
+units.
+
+<jCafe plays well with HTML5 features>
 
