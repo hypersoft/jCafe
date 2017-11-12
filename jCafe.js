@@ -24,7 +24,7 @@
  *      is with the lack of the modification of this source-model, by a        -
  *      foreign-modification-copy-rights-holder.
  *  ~8: freedom for the listing, linking and selling as the derivative-works   -
- *      is with the compliance of these terms
+ *      is with the compliance of these terms.
  *  ~9: use of the name "jCafe" is with the claims of the compliance within    -
  *      these terms.
  *  ~0  for the factual-wrong-doing within these terms by a source-            -
