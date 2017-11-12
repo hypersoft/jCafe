@@ -46,7 +46,7 @@ You can visit many coffee shops to search for good java, but like most java-love
 
 jCafe can help you organize your coding environment by allowing you to modularize your code into custom, practical namespaces; which makes your code ripe for distribution, sharing, and improvements. You can use jCafe anywhere javascript runs, which means if your code is written correctly, your code can run in the same instances.
 
-Its no longer a difficult task to shop around for coffee. jCafe can bring you any brand in the world, and our unique flavor-enhancing-process, is sure to bring out the most of the magic in your beans.
+Its no longer a difficult task to shop around for coffee. jCafe can bring you any brand in the world, and jCafe's unique flavor-enhancing-process, is sure to bring out the most of the magic in your beans.
 
 There is no ton of complicated APIs to master with jCafe. In fact, you can
 become a jCafe: master, just by browsing the builtin modules. If that was not 
