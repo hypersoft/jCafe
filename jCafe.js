@@ -54,7 +54,7 @@ var get = function (name) {
 Object.defineProperties(rt, {
 
 guardChildren: {value: function(p, n) {
-  guardNameSpace(p);
+  rt.guardNameSpace(p);
   if (childKeys.indexOf(n) === -1) return;
     throw "reserved name collision: '"+p+"'; '"+n+"' is a reserved name";
 }, writable: false},
