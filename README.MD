@@ -36,6 +36,10 @@ The `UNIT_BUILDER` is called with all of the instantiated  `UNIT_UNITS` which
 are referenced by string. The `this` object of the builder, is the resulting
 unit's namespace/module/package.
 
+The namespace/module/package is created automatically for each unit. A unit can
+request a module reference through `[UNIT_UNITS]`. Each namespace inherits it's
+javascript prototype from jCafe.rt (rt=run-time).
+
 
 ### Why use jCafe?
 You can visit many coffee shops to search for good java, but like most java-lovers, you want a coffee house with a nice view of the storefront. Simple, subtle, dependable, spacious; and best of all: within your budget.
