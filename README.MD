@@ -2,7 +2,7 @@
 
 ### README
 
-jCafe let's you create a powerful modules system by constructing module units individually. Module units are activated on request, if they are defined. jCafe offers a virtual namespace system, and you can export the namespaces however you like.
+jCafe lets you create a powerful modules system by constructing module units individually. Module units are activated on request, if they are defined. jCafe offers a virtual namespace system, and you can export the namespaces however you like.
 
 Here is an example of using the jCafe namespace with the pre-defined-builtins.
 
