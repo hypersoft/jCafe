@@ -31,7 +31,7 @@
  *      modification-holder is with this damage claim of these ownership rights.
 **/
 
-var jCafe = {/* Fresh Coffe Served Daily */};
+var jCafe = {/* Fresh Coffee Served Daily */};
 
 /* for the boiling water.... */ (function(loader, paths, modules) {
 
