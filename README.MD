@@ -7,12 +7,14 @@ jCafe let's you create a powerful modules system by constructing module units in
 Here is an example of using the jCafe namespace with the pre-defined-builtins.
 
 ```javascript
-var myGlobalRef = jCafe.js.global;
+var jsGlobal = jCafe.js.global;
+// do something with the global object ...
 
+// perform an import of the js namespace
 var js = jCafe.js;
-js.global.console.log("hello world");
+js.global.console.log("hello world"); // now, that is how you do "something"
 
-// the end
+// tune-in, tune-up, turn-out, turned-up ...
 ```
 
 You can also query the namespace by string.
@@ -20,13 +22,23 @@ You can also query the namespace by string.
 var jsGlobal = jCafe('js.global'); // wow, you just did a namespace import!
 ```
 
+Creating new units is simple. One way is to create a static reference.
+```
+// create a static reference to data
+jCafe.link("my.import.data", data);
+```
+
+The way of "all-ways" in creating units follows the format: `new jCafe(UNIT_NAME, [UNIT_UNITS], UNIT_BUILDER)`.
+
+
+`UNIT_NAME` is your jCafe namespace path to your `UNIT_BUILDER` function output.
+The `UNIT_BUILDER` is called with all of the instantiated  `UNIT_UNITS` which
+are referenced by string. The `this` object of the builder, is the resulting
+unit's namespace/module/package.
+
+
 ### Why use jCafe?
 jCafe can help you organize your coding environment by allowing you to modularize your code into custom, practical namespaces; which makes your code ripe for distribution, sharing, and improvements. You can use jCafe anywhere javascript runs, which means if your code is written correctly, your code can run in the same instances.
 
-Its simple, straightforward. There is no ton of complicated APIs to master. In fact, you can become a jCafe-master, just by browsing the builtin modules. jCafe is perfect for developing custom browser-suites, where your API structure may be less than desireable. jCafe also plays well with HTML5 features.
-
-### So you want to define some static data?
-That's simple enough just follow this example.
-```javascript
-jCafe.link("my.import.data", data);
+Its simple, straightforward. There is no ton of complicated APIs to master. In fact, you can become a jCafe: master, just by browsing the builtin modules. jCafe is perfect for developing custom browser-suites, where your API structure may be less than desireable. jCafe also plays well with HTML5 features.
 ```
