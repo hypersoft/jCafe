@@ -1,5 +1,5 @@
 /**
- * javascript:jCafe - WebScript Engineering Toolkit
+ * javascript:jCafe - WebScript Engineering Toolkit                      (v0.2)
  *
  * (C) Hypersoft-Systems: U.-S.-A. ~11-12-2017: NOW-TIME
  *                         <hypersoft.systems@gmail.com>
@@ -100,13 +100,11 @@ Object.defineProperty(rt, "jCafe", {value: rt,
   enumerable: true, writable: false, configurable: true
 });
 
-
 // PROTECT: PUBLIC ASSETS
 Object.defineProperties(jCafe, {
   // this is a sentinel-value
   prototype: {value: Object.freeze({constructor: jCafe}), writable: false, configurable: false, enumerable: false},
 });
-
 
 parentModule = function(n) {
   return jCafe.module(jCafe.parent(n));
@@ -121,7 +119,6 @@ jCafe.module = function(n) {
   var module = modules[n];
   if (module !== undefined) return module;
   var minor = jCafe.child(n); // me name
-  guardNameSpace(n);
   (module = modules[n]  // request === jCafe(n)/paths[n]
     = parentModule(n)[minor] // write+/create parentModule.me = me
         = Object.create(modules.rt) // inherit runtime
@@ -163,7 +160,6 @@ jCafe.parent = function(n) {
   stack.pop();
   return stack.join('.');
 }
-
 
 jCafe.child = function(n) {
   var stack = n.split(".");
