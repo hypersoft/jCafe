@@ -164,7 +164,7 @@ jCafe.parent = function(n) {
 jCafe.child = function(n) {
   var stack = n.split(".");
   var out = stack.pop()
-  guardChildren(n, out);
+  rt.guardChildren(n, out);
   return out;
 }
 
