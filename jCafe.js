@@ -202,7 +202,7 @@ var getUnitParent = function(n) {
 var unitSeparator = ".";
 
 var getUnitParentName = function(n) {
-  if (indexContains(n, unitSeparator) return jCafeRuntimeModuleName; // no more data
+  if (! indexContains(n, unitSeparator)) return jCafeRuntimeModuleName; // no more data
   var stack = n.split(unitSeparator);
   stack.pop();
   return stack.join(unitSeparator);
@@ -325,5 +325,4 @@ return /* PERCOLATOR */;
 
   return /* BLEND: READY */;
 })();
-
 
