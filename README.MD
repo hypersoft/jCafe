@@ -1,4 +1,4 @@
-# jCafe v0.22
+# jCafe v0.23
 
 ### README
 
@@ -12,7 +12,7 @@ var jsGlobal = jCafe.js.global;
 
 // perform an import of the js namespace
 var js = jCafe.js;
-js.global.console.log("hello world"); // now, that is how you do "something"
+js.util.console.log("hello world"); // now, that is how you do "something"
 
 // tune-in, tune-up, turn-out, turned-up ...
 ```
