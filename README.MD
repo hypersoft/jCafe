@@ -56,5 +56,31 @@ less than desireable. The age old problem of which "browser-api-is-it?", is
 easily put to rest with jCafe's re-usable, transportable, and shareable jCafe:
 units.
 
-<jCafe plays well with HTML5 features>
+========
+### Performing a Module Build
+It is not required that you build your jCafe environment using a structured
+filing-system, but in the long run, this will tremendously help your
+development efforts. The drawback to this is that, there is currently no IDE
+capable of handling this kind of project filing system, so you will have to
+perform the build to get context-sensitive IDE support.
+
+The benefits of using a structured filing-system is that, your unit and module
+modifications can be time-stamped-individually, which makes for a nice
+versioning system when using the jCafe Module Builder.
+
+To fire-up the jCafe Module Builder issue the command at your unix-terminal
+from within the root directory of the jCafe project:
+
+```bash
+bin/build > build/jcafe.js
+```
+
+If this feature is not suitable for your purpose, you can always implement
+a your own strategy for building your jCafe distribution. Some people like to
+use npm, gulp, bower, etc; however Hypersoft-Systems: U.-S.-A. does not utilize
+any such technology for development.
+
+The jCafe build system is a quick-put-together due to time constraints.
+A better Unix builder could be made, and might be in the future-time; what is
+available now should be considered a project-structuring-reference-implementation.
 

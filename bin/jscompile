@@ -1,0 +1,55 @@
+#!/bin/bash
+
+DATE_FORMAT="--rfc-3339=seconds";
+
+file-time() {
+  echo [source-checkpoint: $(date $DATE_FORMAT -r $1)];
+}
+
+now-time() {
+  date "$DATE_FORMAT";
+}
+fixName.killDotDir() {
+  echo ${1##*.}
+}
+
+fixName.swapDots() {
+  echo ${1//\//.}
+}
+
+fixName.swapLibrary() {
+  echo ${1/library/jCafe}
+}
+
+fixName.killExtension() {
+  echo ${1%.js}
+}
+
+fixName() {
+  fixName.swapDots $(fixName.swapLibrary `fixName.killExtension ${1#./}`)
+}
+
+function trim {
+awk '{a[NR]=$0;if($0 && !s)s=NR;}
+    END{e=NR;
+        for(i=NR;i>1;i--) 
+            if(a[i]){ e=i; break; } 
+        for(i=s;i<=e;i++)
+            print a[i];}' /dev/stdin
+}
+
+now=$(now-time);
+stamp=$(date +%s);
+echo
+echo // jCafe Module Builder: build-date: $now
+echo
+echo var jCafeBuildDate = $stamp\; // \(${#@} units included\)
+
+for arg; do
+  echo
+  echo // Unit: `fixName $arg` $(file-time $arg)
+  cat $arg | trim
+done;
+echo
+echo // Enjoy: jCafe Custom Blend
+echo

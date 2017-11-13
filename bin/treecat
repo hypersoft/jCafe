@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#shopt -s dotglob  ## Optionally would allow matches for directories beginning with .
+shopt -s nullglob
+
+function traverse {
+    local a file
+    for a; do
+        echo "$a"
+        for file in "$a"/*; do
+            if [[ -d $file ]]; then
+                [[ "${file/.\/}" =~ ^build$  ]] && continue;
+                traverse "$file"
+            else
+                echo "${file/.\/}";
+            fi
+        done
+    done
+}
+
+traverse "${@}";
+

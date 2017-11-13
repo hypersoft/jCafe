@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while read line; do
+  # no devehelp
+  [[ "$line" =~ .*devhelp/ ]] && continue;
+  # no directories
+  [[ -d "$line" ]] && continue;
+  # .js files
+  [[ "$line" =~ .js$ ]] && echo $line;
+done
