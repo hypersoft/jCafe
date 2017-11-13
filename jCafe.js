@@ -228,7 +228,7 @@ jCafe.module = function(n) {
   );
   defineConstant(module, "name", n);
   defineSystem(module, "__unit__", Object.create(null))
-  if (indexContains(n, unitSeparator)) jCafe[n] = module;
+  if (! indexContains(n, unitSeparator)) jCafe[n] = module;
   return module; // return request
 }
 
