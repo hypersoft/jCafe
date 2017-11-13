@@ -176,7 +176,7 @@ jCafe = function(n) {
 }
 
 // this is a system-value
-defineSystem(jCafe, "prototype", Object.freeze({constructor: jCafe}));
+defineSystem(jCafe, "prototype", Object.freeze({constructor: jCafe }));
 
 // link runtime with jCafe
 defineComponent(jCafe, "rt", rt);
