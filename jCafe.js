@@ -116,15 +116,20 @@ var protectedRootNames = protectedJCafeRootNames.concat(
     protectedJavascriptRootProperties,
       protectedJavascriptRootMethods
 );
+
+var indexContains = function (dexer, query) {
+  return dexer.indexOf(query) !== -1;
+}
+
 function protectedRootName(name) {
-  return protectedRootNames.indexOf(name) !== -1;
+  return indexContains(protectedRootNames, name)
 }
 
 var protectedUnitNames = protectedJCafeUnitNames.concat(
   protectedJavascriptUnitNames
 );
 function protectedUnitName(name) {
-  return protectedUnitNames.indexOf(name) !== -1;
+  return indexContains(protectedUnitNames, name);
 }
 
 var guardRootName = function(n) {
@@ -150,11 +155,11 @@ var get = function (name) {
 
 var set = function (name, components, builder) {
   if (typeof name !== 'string')
-    throw 'component name must be a string';
+    throw 'unit name must be a string';
   else if (components === undefined)
-    throw 'no component header for ' + name;
+    throw 'no unit header for ' + name;
   else if (builder === undefined)
-    throw 'no component builder for ' + name;
+    throw 'no unit builder for ' + name;
   var module = getUnitParent(name), unitName = getUnitName(name),
     unit = { module: module, name: unitName, compiled: false,
       components: components, builder: builder,
@@ -174,8 +179,8 @@ jCafe = function(n) {
 defineSystem(jCafe, "prototype", Object.freeze({constructor: jCafe}));
 
 // link runtime with jCafe
-defineProperty(jCafe, "component", "rt", rt);
-defineProperty(rt, "component", "jCafe", jCafe);
+defineComponent(jCafe, "rt", rt);
+defineComponent(rt, "jCafe", jCafe);
 
 // make our define systems a public interface
 defineComponent(jCafe, "defineComponent", defineComponent); // read-only
@@ -194,15 +199,17 @@ var getUnitParent = function(n) {
   return jCafe.module(getUnitParentName(n));
 };
 
+var unitSeparator = ".";
+
 var getUnitParentName = function(n) {
-  if (n.indexOf(".") === -1) return jCafeRuntimeModuleName; // no more data
-  var stack = n.split(".");
+  if (indexContains(n, unitSeparator) return jCafeRuntimeModuleName; // no more data
+  var stack = n.split(unitSeparator);
   stack.pop();
-  return stack.join('.');
+  return stack.join(unitSeparator);
 }
 
 var getUnitName = function(n) {
-  var stack = n.split(".");
+  var stack = n.split(unitSeparator);
   var out = stack.pop()
   guardUnitName(n, out);
   return out;
@@ -218,12 +225,10 @@ jCafe.module = function(n) {
   (module = modules[n]  // request === jCafe(n)/paths[n]
     = getUnitParent(n)[minor] // write+/create getUnitParent.me = me
         = Object.create(rt) // inherit runtime
-  ).name = n; // jCafe(n).name
-  Object.defineProperty(module, "__unit__", {
-    value:Object.create(null),
-      enumerable:false, writable: false, configurable: false
-  });
-  if (n.indexOf(".") === -1) jCafe[n] = module;
+  );
+  defineConstant(module, "name", n);
+  defineSystem(module, "__unit__", Object.create(null))
+  if (indexContains(n, unitSeparator)) jCafe[n] = module;
   return module; // return request
 }
 
@@ -231,13 +236,13 @@ jCafe.module = function(n) {
 var compile = function (name) {
   var actual = paths[name];
   if (actual === undefined)
-     throw "identifier  '"+ name + "' returned undefined";
+     throw "unit identifier  '"+ name + "' has no definition";
   var components = actual.components;
   var tool = actual.builder;
   var module = getUnitParent(name);
   var unit = build(module, tool, components);
   if (unit === undefined)
-     throw "failed to initialize name-space: '"+ name + "'; builder returned undefined";
+     throw "failed to initialize unit: '"+ name + "'; unit-builder returned undefined";
   // override the first-run-getter, and update the value
   defineProperty(module, actual.name, unit)
   actual.compiled = true;
