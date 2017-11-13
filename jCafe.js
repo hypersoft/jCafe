@@ -1,5 +1,5 @@
 /**
- * javascript:jCafe - WebScript Engineering Toolkit                     (v0.21)
+ * javascript:jCafe - WebScript Engineering Toolkit                     (v0.22)
  *
  * (C) Hypersoft-Systems: U.-S.-A. ~11-12-2017: NOW-TIME
  *                         <hypersoft.systems@gmail.com>
@@ -35,36 +35,118 @@ var jCafe = {/* Fresh Coffee Served Daily */};
 
 /* for the boiling water.... */ (function(loader, paths, modules) {
 
-var rt = modules.rt = Object.create(null);
+var rt = Object.create(null);
 
-// this is a protected names registry
-var rootKeys = '__proto__, prototype, compile, rt, build, child, parent, module, set, get, link, name, constructor, children, jCafe, arguments, apply, call, toString, valueOf'.split(",");
-var childKeys = ['children', 'name', '__proto__'];
+// a not-too-cheap property writer
+function defineProperty(o, p, n, v) {
+  // p = "hidden fixed component accessor": specification-list
+  if (arguments.length === 3)
+    return defineProperty(o, "default", (n = p), v);    
+  var type; // gotchas
+  if ((type = typeof o) !== 'object' && type !== 'function') throw new TypeError(
+    "1st parameter type error: expected property host; got: "+type);
+  if (p && (type = typeof p) !== 'string') throw new TypeError(
+    "2nd parameter type error: expected string for property profile; got: "+type);
+  if ((type = typeof n) !== 'string') throw new TypeError(
+    "3rd parameter type error: expected string for property name; got: "+type);
+  var type, profile = profile = (p || "default").split(" "),
+     defn = {value: v, enumerable:true, writable: true, configurable: true};
+  profile.contains = function(q){return this.indexOf(q) !== -1;};
+  if (profile.contains("hidden")) defn.enumerable = false;
+  if (profile.contains("fixed")) defn.configurable = false;
+  if (profile.contains("component")) defn.writable = false;
+  if (profile.contains("constant")) defn.writable = defn.configurable = false; // same as: fixed component
+  if (profile.contains("system")) defn.enumerable = defn.writable = defn.configurable = false; // same as: fixed hidden component
+  if (profile.contains("utility")) defn.enumerable = defn.writable = false; // same as: hidden component
+  var accessorIsKnowable = false;
+  if ([undefined, null, "default", ""].indexOf(p) !== -1)
+    if (typeof v === 'object' && ((typeof (v.get || v.set)) === 'function')) {
+      profile.push("accessor"); accessorIsKnowable = true;
+    }
+  if (profile.contains("accessor") || v && ((typeof (v.get || v.set)) === 'function')) {
+    var type = typeof v;
+    if (!v || type !== 'object') throw "4th parameter type error: expected object with get and or set property values";
+    if (! accessorIsKnowable ) 
+      if (v.get === undefined && v.set === undefined) throw "4th parameter type error: expected object: {get: function(){}}, {set: function(v)} or {get: function(){}, set: function(v){}}";
+    delete defn.value; delete defn.writable;
+    if (v.set) { type = typeof v.set;
+      if (type !== 'function') throw "4th parameter type error: expected type of (Object) parameter.set === function; got: "+type;
+      defn.set = v.set;
+    }
+    if (v.get) { type = typeof v.get;
+      if (type !== 'function') throw "4th parameter type error: expected type of (Object) parameter.get === function; got: "+type;
+      defn.get = v.get;
+    }
+  }
+  return Object.defineProperty(o, n, defn);
+};
+
+// short-cut for defineProperty
+var defineComponent = function(o, n, v) {
+  return defineProperty(o, "component", n, v);
+}
+
+// short-cut for defineProperty
+var defineConstant = function(o, n, v) {
+  return defineProperty(o, "constant", n, v);
+}
+
+// short-cut for defineProperty
+var defineSystem = function(o, n, v) {
+  return defineProperty(o, "system", n, v);
+}
+
+// short-cut for defineProperty
+var defineUtility = function(o, n, v) {
+  return defineProperty(o, "utility", n, v);
+}
+
+var listSplitter = ",";
+var protectedJavascriptRootMethods = 'apply, call, bind, toString, valueOf, constructor, __defineGetter__, __defineSetter__, __lookupGetter__, __lookupSetter__'.split(listSplitter);
+var protectedJavascriptRootProperties = '__proto__, prototype, constructor, name'.split(listSplitter);
+
+var protectedJCafeRootMethods = 'defineSystem, defineConstant, defineUtility, defineComponent, protectedRootName, protectedUnitName, module, link'.split(listSplitter);
+var protectedJCafeRootNames = 'rt, jcafe, jCafe'.split(listSplitter);
+
+var protectedJCafeUnitNames = '__unit__, name'.split(listSplitter);
+var protectedJavascriptUnitNames = '__proto__, __defineGetter__, __defineSetter__, __lookupGetter__, __lookupSetter__'.split(listSplitter);
+
+var protectedRootNames = protectedJCafeRootNames.concat(
+  protectedJCafeRootMethods,
+    protectedJavascriptRootProperties,
+      protectedJavascriptRootMethods
+);
+function protectedRootName(name) {
+  return protectedRootNames.indexOf(name) !== -1;
+}
+
+var protectedUnitNames = protectedJCafeUnitNames.concat(
+  protectedJavascriptUnitNames
+);
+function protectedUnitName(name) {
+  return protectedUnitNames.indexOf(name) !== -1;
+}
+
+var guardRootName = function(n) {
+  if (protectedRootName(n)) throw "root name: "+n+"; is a protected root name";
+}
+
+var guardUnitName = function(p, n) {
+  guardRootName(p);
+  if (protectedUnitName(n))
+    throw "unit name: "+n+"; is a protected unit name";
+};
 
 var get = function (name) {
   var actual = paths[name];
   if (actual === undefined) {
     var module = modules[name];
     if (module !== undefined) return module;
-    throw 'component [' + name + '] was undefined';
-  } else if (actual.singleton === undefined) jCafe.compile(name);
-  return actual.singleton;
+    throw 'unit [' + name + '] was undefined';
+  }
+  if (actual.compiled) return actual.module[actual.name];
+  else return compile(name);
 };
-
-Object.defineProperties(rt, {
-
-guardChildren: {value: function(p, n) {
-  rt.guardNameSpace(p);
-  if (childKeys.indexOf(n) === -1) return;
-    throw "reserved name collision: '"+p+"'; '"+n+"' is a reserved name";
-}, writable: false},
-
-guardNameSpace: {value: function(n) {
-  if (rootKeys.indexOf(n.split(".")[0]) !== -1)
-    throw 'component name: '+n+' is reserved';
-}, writable: false},
-
-});
 
 var set = function (name, components, builder) {
   if (typeof name !== 'string')
@@ -73,14 +155,12 @@ var set = function (name, components, builder) {
     throw 'no component header for ' + name;
   else if (builder === undefined)
     throw 'no component builder for ' + name;
-  var module = parentModule(name), child = jCafe.child(name),
-    unit = { module: module, name: child, singleton: undefined,
+  var module = getUnitParent(name), unitName = getUnitName(name),
+    unit = { module: module, name: unitName, compiled: false,
       components: components, builder: builder,
     };
-  Object.defineProperty(module, child, {
-    get: function(){return get(name)}, configurable: true, enumerable: true
-  });
-  return paths[name] = module.children[child] = unit;
+  defineComponent(module, unitName, {get: function(){return get(name)} });
+  return paths[name] = module.__unit__[unitName] = unit;
 };
 
 // YES: WRITE TO jCafe
@@ -90,40 +170,56 @@ jCafe = function(n) {
   else Object.setPrototypeOf(this, set.apply(jCafe, arguments));
 }
 
-Object.defineProperty(jCafe, "rt", {value: rt,
-  enumerable: true, writable: false, configurable: true
-});
+// this is a system-value
+defineSystem(jCafe, "prototype", Object.freeze({constructor: jCafe}));
 
-modules.rt = jCafe.rt;
+// link runtime with jCafe
+defineProperty(jCafe, "component", "rt", rt);
+defineProperty(rt, "component", "jCafe", jCafe);
 
-Object.defineProperty(rt, "jCafe", {value: rt,
-  enumerable: true, writable: false, configurable: true
-});
+// make our define systems a public interface
+defineComponent(jCafe, "defineComponent", defineComponent); // read-only
+defineComponent(jCafe, "defineUtility", defineUtility); // hidden, read-only
+defineComponent(jCafe, "defineSystem", defineSystem); // hidden, read-only, unconfigurable
+defineComponent(jCafe, "defineConsant", defineConstant); // read-only, unconfigurable
 
-// PROTECT: PUBLIC ASSETS
-Object.defineProperties(jCafe, {
-  // this is a sentinel-value
-  prototype: {value: Object.freeze({constructor: jCafe}), writable: false, configurable: false, enumerable: false},
-});
+// make rt like a module
+var jCafeRuntimeModuleName = 'jcafe';
+defineConstant(rt, "name", jCafeRuntimeModuleName);
 
-parentModule = function(n) {
-  return jCafe.module(jCafe.parent(n));
+defineComponent(jCafe, "protectedRootName", protectedRootName);
+defineComponent(jCafe, "protectedUnitName", protectedUnitName);
+
+var getUnitParent = function(n) {
+  return jCafe.module(getUnitParentName(n));
+};
+
+var getUnitParentName = function(n) {
+  if (n.indexOf(".") === -1) return jCafeRuntimeModuleName; // no more data
+  var stack = n.split(".");
+  stack.pop();
+  return stack.join('.');
 }
 
-var RUNTIME = 'root';
+var getUnitName = function(n) {
+  var stack = n.split(".");
+  var out = stack.pop()
+  guardUnitName(n, out);
+  return out;
+}
 
 // module context
 jCafe.module = function(n) {
-  if (n === RUNTIME) // break-create-loop
-    return modules.rt;
+  if (n === jCafeRuntimeModuleName) // break-create-loop
+    return rt;
   var module = modules[n];
   if (module !== undefined) return module;
-  var minor = jCafe.child(n); // me name
+  var minor = getUnitName(n); // me name
   (module = modules[n]  // request === jCafe(n)/paths[n]
-    = parentModule(n)[minor] // write+/create parentModule.me = me
-        = Object.create(modules.rt) // inherit runtime
+    = getUnitParent(n)[minor] // write+/create getUnitParent.me = me
+        = Object.create(rt) // inherit runtime
   ).name = n; // jCafe(n).name
-  Object.defineProperty(module, "children", {
+  Object.defineProperty(module, "__unit__", {
     value:Object.create(null),
       enumerable:false, writable: false, configurable: false
   });
@@ -132,44 +228,30 @@ jCafe.module = function(n) {
 }
 
 // used internally, this one fires up the module & unit builder
-jCafe.compile = function (name) {
+var compile = function (name) {
   var actual = paths[name];
   if (actual === undefined)
      throw "identifier  '"+ name + "' returned undefined";
   var components = actual.components;
   var tool = actual.builder;
-  var module = parentModule(name);
-  var singleton = jCafe.build(module, tool, components);
-  // override the first-run-getter, and update the value
-  Object.defineProperty(module, jCafe.child(name),
-    {value: singleton, configurable:true, writable:true, enumerable:true});
-  if (singleton === undefined)
+  var module = getUnitParent(name);
+  var unit = build(module, tool, components);
+  if (unit === undefined)
      throw "failed to initialize name-space: '"+ name + "'; builder returned undefined";
-  return actual.singleton = singleton;
+  // override the first-run-getter, and update the value
+  defineProperty(module, actual.name, unit)
+  actual.compiled = true;
+  return unit;
 };
 
-jCafe.build = function (scope, callback, names) {
+var build = function (scope, callback, names) {
   if (typeof scope === 'string') scope = modules[scope];
   var len = names.length;
-  var singletons = new Array(len);
+  var units = new Array(len);
   for (var i = 0; i < len; ++i)
-    singletons[i] = get(names[i]);
-  return callback.apply(scope, singletons);
+    units[i] = get(names[i]);
+  return callback.apply(scope, units);
 };
-
-jCafe.parent = function(n) {
-  if (n.indexOf(".") === -1) return RUNTIME; // no more data
-  var stack = n.split(".");
-  stack.pop();
-  return stack.join('.');
-}
-
-jCafe.child = function(n) {
-  var stack = n.split(".");
-  var out = stack.pop()
-  rt.guardChildren(n, out);
-  return out;
-}
 
 // this helps with minification when using a lot of global references
 jCafe.link = function (name, ref) {
