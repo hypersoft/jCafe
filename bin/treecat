@@ -9,7 +9,7 @@ if [[ ${1:0:2} == -f ]]; then
   filter="$1";
   shift;
 fi;
-
+test $# == 0 && set -- .;
 # recursive tree list
 while test $# != 0; do
 	test "$1" == "*" && break;
