@@ -218,7 +218,7 @@ var getUnitName = function(n) {
 
 // module context
 jCafe.module = function(n) {
-  if (n === jCafeRuntimeModuleName) // break-create-loop
+  if (n === jCafeRuntimeModuleName) // break-create-loop === return: rt
     return rt;
   var module = modules[n];
   if (module !== undefined) return module;
