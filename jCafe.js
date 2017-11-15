@@ -259,7 +259,7 @@ var build = function (scope, callback, names) {
   return callback.apply(scope, units);
 };
 
-// this helps with minification when using a lot of global references
+// new jCafe(...) shortcut for pre-composed units
 jCafe.link = function (name, ref) {
   new jCafe(name, [], function () { return ref; });
 };
