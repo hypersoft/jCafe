@@ -81,7 +81,7 @@ var defineComponent = function(o, n, v) {
 
 // short-cut for defineProperty
 var defineComponentGateway = function(o, n, v) { // our defineProperty used to handle these settings internally. it was a messy business.
-  return defineProperty(o, "component gateway", n, v);
+  return defineProperty(o, "gateway", n, v);
 }
 
 // short-cut for defineProperty
