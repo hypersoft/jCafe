@@ -23,7 +23,7 @@
     // local values: jCafePath, jCafeSelf, jCafeUnit
     // you could also return this function, bound to an object, so as to,
     // return a linked object method as a single unit.
-    return typeof jCafeSelf+" === typeof (demo) jCafeLiveUnitTemplate";
+    return typeof jCafeSelf+" === typeof "+jCafeLiveUnit.name+" (demo)";
     
   }; // jCafe prepared output
 
@@ -34,7 +34,7 @@
  
 }).apply (
 
-  this, // whatever you want keyword "this" to be, during: initialization
+  this, // whatever you want keyword "this" to be, during: jCafeLiveUnit() { ... }
   
   [ // initializer parameters
     /* jCafePath = */ "acme.jcafe.live.unit"
