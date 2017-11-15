@@ -1,4 +1,3 @@
-// unit: acme.jcafe.link.template
 
 (function jCafeLiveUnit (jCafePath) {
 
@@ -24,7 +23,7 @@
     // local values: jCafePath, jCafeSelf, jCafeUnit
     // you could also return this function, bound to an object, so as to,
     // return a linked object method as a single unit.
-    return "wow, that was cool, do it again with another value type";
+    return typeof jCafeSelf+" === typeof (demo) jCafeLiveUnitTemplate";
     
   }; // jCafe prepared output
 
@@ -38,8 +37,19 @@
   this, // whatever you want keyword "this" to be, during: initialization
   
   [ // initializer parameters
-    /* jCafePath = */ "acme.jcafe.link.template"
+    /* jCafePath = */ "acme.jcafe.live.unit"
   ]
+  
+);
+
+// Demo usage:
+
+var acme = jCafe.acme;
+
+jCafe.js.util.log(
+
+  // do the call to our demo unit: 
+  acme.jcafe.live.unit()
   
 );
 
