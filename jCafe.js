@@ -39,7 +39,7 @@ var rt = Object.create(null);
 
 // a not-too-cheap property writer
 function defineProperty(o, p, n, v) {
-  // p = "hidden fixed component accessor": specification-list
+  // p = "hidden fixed component gateway": specification-list
   if (arguments.length === 3)
     return defineProperty(o, "default", (n = p), v);    
   var type; // gotchas
@@ -58,7 +58,7 @@ function defineProperty(o, p, n, v) {
   if (profile.contains("constant")) defn.writable = defn.configurable = false; // same as: fixed component
   if (profile.contains("system")) defn.enumerable = defn.writable = defn.configurable = false; // same as: fixed hidden component
   if (profile.contains("utility")) defn.enumerable = defn.writable = false; // same as: hidden component
-  if (profile.contains("accessor")) {
+  if (profile.contains("gateway")) {
     var type = typeof v;
     if (!v || type !== 'object') throw "4th parameter type error: expected type of (Object) with get and or set property values; got: "+type;
     delete defn.value; delete defn.writable;
@@ -80,8 +80,8 @@ var defineComponent = function(o, n, v) {
 }
 
 // short-cut for defineProperty
-var defineComponentAccessor = function(o, n, v) { // our defineProperty used to handle these settings internally. it was a messy business.
-  return defineProperty(o, "component accessor", n, v);
+var defineComponentGateway = function(o, n, v) { // our defineProperty used to handle these settings internally. it was a messy business.
+  return defineProperty(o, "component gateway", n, v);
 }
 
 // short-cut for defineProperty
@@ -162,7 +162,7 @@ var set = function (name, components, builder) {
     unit = { module: module, name: unitName, compiled: false,
       components: components, builder: builder,
     };
-  defineComponentAccessor(module, unitName, {get: function(){return get(name)} });
+  defineComponentGateway(module, unitName, {get: function(){return get(name)} });
   return paths[name] = module.__unit__[unitName] = unit;
 };
 
@@ -182,7 +182,7 @@ defineComponent(rt, "jCafe", jCafe);
 
 // make our define systems a public interface
 defineComponent(jCafe, "defineComponent", defineComponent); // read-only
-defineComponentAccessor(jCafe, "defineComponentAccessor", defineComponentAccessor); // read-only: {get and/or set}
+defineComponentGateway(jCafe, "defineComponentGateway", defineComponentGateway); // read-only: {get and/or set}
 defineComponent(jCafe, "defineUtility", defineUtility); // hidden, read-only
 defineComponent(jCafe, "defineSystem", defineSystem); // hidden, read-only, unconfigurable
 defineComponent(jCafe, "defineConsant", defineConstant); // read-only, unconfigurable
