@@ -23,7 +23,7 @@
     // local values: jCafePath, jCafeSelf, jCafeUnit
     // you could also return this function, bound to an object, so as to,
     // return a linked object method as a single unit.
-    return typeof jCafeSelf+" === typeof "+jCafeLiveUnit.name+" (demo)";
+    return typeof jCafeSelf+" === typeof "+jCafeLiveUnit.name+"(\""+jCafePath+"\")";
     
   }; // jCafe prepared output
 
