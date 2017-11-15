@@ -3,6 +3,26 @@
 #shopt -s dotglob  ## Optionally would allow matches for directories beginning with .
 shopt -s nullglob
 
+filter=true;
+if [[ ${1:0:2} == -f ]]; then
+  shift;
+  filter="$1";
+  shift;
+fi;
+
+# recursive tree list
+while test $# != 0; do
+	test "$1" == "*" && break;
+#	test "$1" == . && { shift; continue; }
+	test "$1" == "./" && { shift; continue; }
+	path=${1}
+	$filter "$path" && printf "%s\n" "$path";
+	[[ -d "$1" ]] && 	"$0" "$1"/*;
+	shift;
+done;
+
+exit
+
 function traverse {
     local a file
     for a; do

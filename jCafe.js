@@ -211,7 +211,7 @@ var getUnitParentName = function(n) {
 var getUnitName = function(n) {
   var stack = n.split(unitSeparator);
   var out = stack.pop()
-  guardUnitName(n, out);
+  guardUnitName(getUnitParentName(n), out);
   return out;
 }
 
