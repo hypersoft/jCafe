@@ -80,7 +80,7 @@ var defineComponent = function(o, n, v) {
 }
 
 // short-cut for defineProperty
-var defineComponentGateway = function(o, n, v) { // our defineProperty used to handle these settings internally. it was a messy business.
+var defineGateway = function(o, n, v) { // our defineProperty used to handle these settings internally. it was a messy business.
   return defineProperty(o, "gateway", n, v);
 }
 
@@ -162,7 +162,7 @@ var set = function (name, components, builder) {
     unit = { module: module, name: unitName, compiled: false,
       components: components, builder: builder,
     };
-  defineComponentGateway(module, unitName, {get: function(){return get(name)} });
+  defineGateway(module, unitName, {get: function(){return get(name)} });
   return paths[name] = module.__unit__[unitName] = unit;
 };
 
@@ -182,7 +182,7 @@ defineComponent(rt, "jCafe", jCafe);
 
 // make our define systems a public interface
 defineComponent(jCafe, "defineComponent", defineComponent); // read-only
-defineComponentGateway(jCafe, "defineComponentGateway", defineComponentGateway); // read-only: {get and/or set}
+defineGateway(jCafe, "defineGateway", defineGateway); // read-only: {get and/or set}
 defineComponent(jCafe, "defineUtility", defineUtility); // hidden, read-only
 defineComponent(jCafe, "defineSystem", defineSystem); // hidden, read-only, unconfigurable
 defineComponent(jCafe, "defineConsant", defineConstant); // read-only, unconfigurable
