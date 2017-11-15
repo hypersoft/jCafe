@@ -208,10 +208,12 @@ var getUnitParentName = function(n) {
   return stack.join(unitSeparator);
 }
 
+var getUnitRootName function(n) { return n.split(unitSeparator)[0]; }
+
 var getUnitName = function(n) {
   var stack = n.split(unitSeparator);
-  var out = stack.pop()
-  guardUnitName(getUnitParentName(n), out);
+  var out = stack[stack.length - 1];
+  guardUnitName(getUnitRootName(n), out);
   return out;
 }
 
