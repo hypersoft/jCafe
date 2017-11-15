@@ -1,1 +1,1 @@
-bin/jscompile `bin/treecat . | bin/jsfilter`
+bin/jscompile `(echo jCafe.js; bin/treecat library) | bin/jsfilter`

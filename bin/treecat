@@ -13,11 +13,10 @@ fi;
 # recursive tree list
 while test $# != 0; do
 	test "$1" == "*" && break;
-#	test "$1" == . && { shift; continue; }
-	test "$1" == "./" && { shift; continue; }
-	path=${1}
+	path=${1/\.\//}
+	path=${path%*/}
 	$filter "$path" && printf "%s\n" "$path";
-	[[ -d "$1" ]] && 	"$0" "$1"/*;
+	[[ -d "$path" ]] && 	"$0" -f "$filter" "$path"/*;
 	shift;
 done;
 
