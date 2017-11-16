@@ -16,7 +16,7 @@ while test $# != 0; do
 	path=${1/\.\//}
 	path=${path%*/}
 	$filter "$path" && printf "%s\n" "$path";
-	[[ -d "$path" ]] && $0 -f "$filter" "$path"/*;
+	([[ -d "$path" ]] && $0 -f "$filter" "$path"/*) &
 	shift;
 done;
 
