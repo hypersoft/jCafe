@@ -112,6 +112,10 @@ fi;
 done;
 
 (($# == 2)) && { # arguments
+  ((main == 0)) || {
+    echo "invalid arguments main has already been supplied";
+    exit 1;
+  } >&2;  
   $0 --main "$1" "$2";
   exit $?
   #${localHost}jscompile $SuiteOptions `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
