@@ -49,6 +49,12 @@ while [[ ${1:0:2} == -- ]]; do
     continue;
   fi;
     
+  if [[ ${1} =~ -(-unit|u) ]]; then
+      ${localHost}jscompile --unit "$2" "$3";
+    shift 3;
+    continue;
+  fi;
+
   echo "Sorry, i don't know what $1 means" >&2;
   exit 1;
   

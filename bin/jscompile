@@ -64,9 +64,20 @@ while [[ ${1:0:2} == -- ]]; do
     cat <<EOF
 $(echo // jCafe Raw Resource: snapshot-date: $now)
 
-$(cat "$2");
+$(cat "$2" | trim);
 EOF
     shift 2;
+    continue;
+  fi;
+
+  if [[ ${1} =~ -(-unit|u) ]]; then
+file="${2%:}"
+    cat <<EOF
+
+$(echo // Unit: $Suite.$3 $(file-time ${file}))
+$(cat "$file" | trim);
+EOF
+    shift 3;
     continue;
   fi;
 
