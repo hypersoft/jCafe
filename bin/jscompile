@@ -116,7 +116,7 @@ echo var jCafeBuildDate = $stamp\; // \(${#@} units included\)
 for arg; do
   echo
   if [[ -n "$port" ]]; then
-    echo // Origin: Port: `fixName $arg`, $port $(file-time $arg)
+    echo // Port Origin: `fixName $arg`, $port $(file-time $arg)
   else
     echo // Origin: `fixName $arg` $(file-time $arg)
   fi
