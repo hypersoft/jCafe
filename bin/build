@@ -51,10 +51,12 @@ generate your application profiles.
 OR YOU CAN CHOOSE: HOUSE-ROOT-BLEND (WHICH IS OUR FAVORITE RECIPE)
 
 build SCRIPT ROOT OR null: ROOT
+
 EOF
 
 # BASH MASTER 4 LIFE: SUCKA
-exit # status
+
+  exit 1 # status
 
 fi;
 
