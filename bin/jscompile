@@ -75,7 +75,7 @@ while [[ ${1:0:1} == - ]]; do
   if [[ ${1} =~ -(-main|m) ]]; then
     echo
     if [[ -n "$from" ]]; then
-    echo // Mock Module in $Suite: mocking: $from as $to: build-date: $now
+    echo // Mock Module mocking: $from as $to: build-date: $now
     echo
     else
     echo // Main Module ${Suite}: build-date: $now
