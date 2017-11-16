@@ -20,7 +20,7 @@
   // jCafe.module(jCafePath); /* rather than */ var myFunctionDemo =
   
   function() {
-    // local values: jCafePath, jCafeSelf, jCafeUnit
+    // local values: jCafePath, jCafeSelf, jCafeUnit, jCafeLiveUnit
     // you could also return this function, bound to an object, so as to,
     // return a linked object method as a single unit.
     return typeof jCafeSelf+" === typeof "+jCafeLiveUnit.name+"(\""+jCafePath+"\")";
@@ -34,7 +34,7 @@
  
 }).apply (
 
-  this, // whatever you want keyword "this" to be, during: jCafeLiveUnit() { ... }
+  this, // whatever you want keyword "this" to be, during-first: jCafeLiveUnit() { ... }
   
   [ // initializer parameters
     /* jCafePath = */ "acme.jcafe.live.unit"
