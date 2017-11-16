@@ -9,8 +9,11 @@
 
 localHost=${0%/build}/;
 [[ $localHost == "/" ]] && localHost="";
+
 declare -i portLoop=0;
+
 compileOptions="";
+
 while [[ ${1:0:2} == -- ]]; do
 
   if [[ ${1} == --suite ]]; then
