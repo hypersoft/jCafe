@@ -14,9 +14,9 @@ compileOptions="";
 while [[ ${1:0:2} == -- ]]; do
 
   if [[ ${1} == --suite ]]; then
-    SuiteOptions="$compileOptions $1 $2"; # compiler default: jCafe
-    # this is the jCafe like name, where the modules are comming from.
-    # the port function of the compiler uses this for context info.
+    SuiteOptions="$compileOptions $1 $2"; # compiler default: --suite jCafe
+    # this is the jCafe like name, where the modules are installed at runtime.
+    # the port function of the compiler uses this for context info on porting.
     shift; continue;
   fi;
 
