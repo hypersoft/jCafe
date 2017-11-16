@@ -28,7 +28,7 @@ generate your application profiles.
 
 -  set compiler script suite name, this feature is optional.
   
---main SCRIPT
+--main SCRIPT [ROOT]
 
 -  include main script (call once, usually first or after --raw)
 
@@ -92,7 +92,7 @@ fi;
     } >&2;  
     let noops=0
     let main=1;
-    ${localHost}jscompile $SuiteOptions --main "$2" `${localHost}treecat "$origin" | ${localHost}jsfilter`
+    ${localHost}jscompile $SuiteOptions --main "$2" `${localHost}treecat "$3" | ${localHost}jsfilter`
     shift 2;
     continue;
   fi;
