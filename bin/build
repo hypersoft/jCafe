@@ -55,9 +55,8 @@ fi;
 
   if [[ ${1} == --suite ]]; then
     let noops=0
-    SuiteOptions="$compileOptions $1 $2"; # compiler default: --suite jCafe
+    SuiteOptions="$1 $2"; # compiler default: --suite jCafe
     # this is the jCafe like name, where the modules are installed at runtime.
-    # the port function of the compiler uses this for context info on porting.
     shift 2; continue;
   fi;
 
