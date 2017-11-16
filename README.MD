@@ -77,7 +77,8 @@ bin/build jCafe.js library > build/jcafe.js
 bin/build -h|--help # to get started with the house blender.
 ```
 
-You should file an issue on the builder if you find one. Thanks.
+Talk about franchise licensing opportunities, `build --suite jCafe:Shop`
+You should file an issue on the blender if you find one. Thanks.
 
 If this feature is not suitable for your purpose, you can always implement
 your own strategy for building your jCafe distribution. Some people like to
