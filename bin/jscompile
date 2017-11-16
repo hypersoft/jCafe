@@ -20,10 +20,6 @@ fixName.swapDots() {
   echo ${1//\//.}
 }
 
-fixName.swapLibrary() {
-  echo ${1/library/${Suite}}
-}
-
 fixName.killExtension() {
   echo ${1%.js}
 }
