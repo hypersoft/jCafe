@@ -35,7 +35,9 @@
 }).apply (
 
   this, // whatever you want keyword "this" to be, during-first: jCafeLiveUnit() { ... }
-  
+        // you could for example, install this as the unit of jCafeLiveUnit(p),
+        // by/through: jCafeSelf = this; thusly: jCafe.module(p) can === this
+
   [ // initializer parameters
     /* jCafePath = */ "acme.jcafe.live.unit"
   ]
