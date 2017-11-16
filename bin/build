@@ -9,7 +9,7 @@
 
 localHost=${0%/build}/;
 [[ $localHost == "/" ]] && localHost="";
-
+declare -i portLoop=0;
 compileOptions="";
 while [[ ${1:0:2} == -- ]]; do
 
@@ -31,7 +31,10 @@ while [[ ${1:0:2} == -- ]]; do
     } >&2;
     origin="${2/:/}" oldModule="${3/,/}" newModule="$4";
     compileOptions="$SuiteOptions --port $oldModule: $newModule";
-    ${localHost}jscompile $compileOptions `${localHost}treecat "$origin" | ${localHost}jsfilter`
+    ${localHost}jscompile $compileOptions `${localHost}treecat "$origin" | ${localHost}jsfilter` || {
+      echo "failed to jscompile $compileOptions";
+    } >&2;
+    portLoop++;
     shift 4;
     compileOptions="$SuiteOptions";
     continue;
@@ -42,7 +45,7 @@ while [[ ${1:0:2} == -- ]]; do
   
 done;
 
-[[ -n "$origin" ]] && {
+((portLoop)) && {
   exit 0;
 }
 
