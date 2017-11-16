@@ -3,7 +3,7 @@ shopt -s extglob;
 
 DATE_FORMAT="--rfc-3339=seconds";
 
-Suite=jCafe;
+Suite=jCafe from="" to="";
 
 file-time() {
   echo [source-checkpoint: $(date $DATE_FORMAT -r $1)];
@@ -29,7 +29,7 @@ fixName.killExtension() {
 }
 
 fixName() {
-  fixName.swapDots $(fixName.swapLibrary `fixName.killExtension ${1#./}`)
+  fixName.swapDots $(fixName.killExtension ${1#./})
 }
 
 function trim {
@@ -41,12 +41,22 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
             print a[i];}' /dev/stdin
 }
 
+function output {
+  if [[ -n "$from" ]]; then
+   trim | sed s/$from/$to/g;
+  else
+   trim;
+  fi;
+}
+
 now=$(now-time);
 stamp=$(date +%s);
 while [[ ${1:0:2} == -- ]]; do
-
   if [[ ${1} == --suite ]]; then
     Suite="$2";
+    if [[ "$Suite" =~ .+:.+ ]]; then
+      from="${Suite%:*}" to="${Suite#*:}"
+    fi;
     shift 2; continue;
   fi;
   
@@ -61,45 +71,40 @@ while [[ ${1:0:2} == -- ]]; do
   fi;
 
   if [[ ${1} =~ -(-raw|r) ]]; then
-    cat <<EOF
-$(echo // jCafe Raw Resource: snapshot-date: $now)
-
-$(cat "$2" | trim);
-EOF
+    echo // jCafe Raw Resource: snapshot-date: $now
+    echo
+    cat "$2" | output;
     shift 2;
     continue;
   fi;
 
   if [[ ${1} =~ -(-main|m) ]]; then
     echo
-    if [[ "$Suite" =~ .+:.+ ]]; then
-      from="${Suite%:*}" to="${Suite#*:}"
+    if [[ -n "$from" ]]; then
     echo // Main Module Mocks $from as $to: build-date: $now
-      cat "$2" | trim | sed s/$from/$to/g;
     else
-    echo // Main Module ${Suite/:/}: build-date: $now
-      cat "$2" | trim;
+    echo // Main Module ${Suite}: build-date: $now
     fi;
+    cat "$2" | output;
     echo
     shift 2;
     continue;
   fi;
 
   if [[ ${1} =~ -(-unit|u) ]]; then
-file="${2%:}"
-    cat <<EOF
-
-$(echo // Unit: $Suite.$3 $(file-time ${file}))
-$(cat "$file" | trim);
-EOF
+    file="${2%:}"
+    echo // Unit: $Suite.$3 $(file-time ${file})
+    echo
+    cat "$file" | output;
     shift 3;
     continue;
   fi;
+  
 
   echo "Sorry, i don't know what $1 means" >&2;
   exit 1;
 
-done;
+done
 
 [[ $# == 0 ]] && exit;
 
@@ -120,7 +125,7 @@ for arg; do
   else
     echo // Unit: `fixName $arg` $(file-time $arg)
   fi
-  cat $arg | trim
+  cat $arg | output
 done | {
   if [[ -n "$port" ]]; then
     sed s/[^.]$root./$port./g;

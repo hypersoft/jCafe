@@ -40,7 +40,6 @@ while [[ ${1:0:2} == -- ]]; do
     } >&2;
     let noops=0
     shift 4;
-    compileOptions="$SuiteOptions";
     continue;
   fi;
 
@@ -75,10 +74,13 @@ while [[ ${1:0:2} == -- ]]; do
   
 done;
 
-((noops)) && { # no-ops handled: use default planning
-  ${localHost}jscompile `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
+(($# == 2)) && { # arguments
+  ${localHost}jscompile $SuiteOptions `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
+  echo;
 }
 
-echo // Enjoy: jCafe Custom Blend
-echo
+echo '/*' Enjoy: jCafe Custom Blend
+printf \
+  "\n%s\n*/" \
+"                                                --Hypersoft-Systems: U.-S.-A."
 
