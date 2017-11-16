@@ -40,12 +40,6 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
 
 while [[ ${1:0:2} == -- ]]; do
 
-  if [[ ${1} == --virtual ]]; then
-    virtual="$2";
-    shift 2;
-    continue;
-  fi;
-
   if [[ ${1} == --port ]]; then
     [[ "$2" =~ \:$ ]] || {
       echo invalid arguments expected new.root: current.root
@@ -55,6 +49,9 @@ while [[ ${1:0:2} == -- ]]; do
     shift 3;
     continue;
   fi;
+
+  echo "Sorry, i don't know what :"$1 means >&2;
+  exit 1;
 
 done;
 
@@ -67,8 +64,8 @@ echo var jCafeBuildDate = $stamp\; // \(${#@} units included\)
 
 for arg; do
   echo
-  if [[ -n "$virtual" && -n "$port" ]]; then
-    echo // Unit: $virtual.$port.`fixName $arg` $(file-time $arg)
+  if [[ -n "$port" ]]; then
+    echo // Unit: Port.$root.`fixName $arg` $(file-time $arg)
   else
     echo // Unit: `fixName $arg` $(file-time $arg)
   fi
