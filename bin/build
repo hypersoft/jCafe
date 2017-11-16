@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# let 1 = HeadScript
-# let 2 = Flavor
-# for each directory in Flavor[.../target?]: directory = module, jsfiles = module[units]
-# result: HeadScript.module.unit/module++
-
-# sample: build jCafe from the root directory: bin/build jCafe.js library
-
 localHost=${0%/build}/;
 [[ $localHost == "/" ]] && localHost="";
 
