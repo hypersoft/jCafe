@@ -19,6 +19,7 @@ compileOptions="";
 while [[ ${1:0:2} == -- ]]; do
 
 if [[ "${1}" =~ -(-help|h) ]]; then cat <<EOF
+
 build Help menu
 
 Using the following switches, allows you to blend your beans on-demand
@@ -44,14 +45,12 @@ generate your application profiles.
 --port /path/to/file: module.path.name, new.module.path.name
 
 -  port a module or unit via key-sync. specify as many --port opts as you need.
--  this feature is like the unit feature, but you can change the path of the
--  unit throughought the module, just as you can with the --suite NAME:NAME
--  configuration.
+-  this feature is like the unit feature, but you can change the root path of
+-  the unit throughought the module.
   
 OR YOU CAN CHOOSE: HOUSE-ROOT-BLEND (WHICH IS OUR FAVORITE RECIPE)
 
 build SCRIPT ROOT OR null: ROOT
-
 EOF
 
 # BASH MASTER 4 LIFE: SUCKA
