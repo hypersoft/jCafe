@@ -122,8 +122,6 @@ done;
   } >&2;  
   $0 --main "$1" "$2";
   exit $?
-  #${localHost}jscompile $SuiteOptions `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
-  #echo;
 }
 
 echo '/*' Enjoy: jCafe Custom Blend:
