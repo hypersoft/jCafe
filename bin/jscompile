@@ -117,8 +117,10 @@ for arg; do
   echo
   if [[ -n "$port" ]]; then
     echo // Port Origin: `fixName $arg`, $port $(file-time $arg)
+    echo
   else
     echo // Origin: `fixName $arg` $(file-time $arg)
+    echo
   fi
   cat $arg | output; 
 done | {
