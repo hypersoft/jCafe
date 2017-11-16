@@ -119,7 +119,7 @@ for arg; do
   else
     echo // Unit: `fixName $arg` $(file-time $arg)
   fi
-  cat $arg | output
+  cat $arg | output; 
 done | {
   if [[ -n "$port" ]]; then
     sed s/[^.]$root./$port./g;

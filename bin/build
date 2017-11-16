@@ -7,6 +7,8 @@ declare -i noops=1 main=0;
 
 compileOptions="";
 
+boot="$@";
+
 while [[ ${1:0:1} == - ]]; do
 
 if [[ "${1}" =~ -(-help|h) ]]; then cat <<EOF
@@ -86,6 +88,7 @@ fi;
     let noops=0
     let main=1;
     ${localHost}jscompile $SuiteOptions --main "$2" `${localHost}treecat "$3" | ${localHost}jsfilter`
+    echo
     shift 2;
     continue;
   fi;
@@ -114,7 +117,9 @@ done;
   echo;
 }
 
-echo '/*' Enjoy: jCafe Custom Blend
+echo '/*' Enjoy: jCafe Custom Blend:
+echo
+echo build $boot\;
 printf \
   "\n%s\n*/" \
 "                                                --Hypersoft-Systems: U.-S.-A."
