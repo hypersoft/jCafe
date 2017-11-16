@@ -76,11 +76,12 @@ while [[ ${1:0:1} == - ]]; do
     echo
     if [[ -n "$from" ]]; then
     echo // Main Module Mocks $from as $to: build-date: $now
+    echo
     else
     echo // Main Module ${Suite}: build-date: $now
+    echo
     fi;
     cat "$2" | output;
-    echo
     shift 2;
     continue;
   fi;
