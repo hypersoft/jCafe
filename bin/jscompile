@@ -75,7 +75,7 @@ while [[ ${1:0:1} == - ]]; do
   if [[ ${1} =~ -(-main|m) ]]; then
     echo
     if [[ -n "$from" ]]; then
-    echo // Main Module Mocks $from as $to: build-date: $now
+    echo // Mock Module in $Suite: mocking: $from as $to: build-date: $now
     echo
     else
     echo // Main Module ${Suite}: build-date: $now
@@ -105,9 +105,9 @@ done
 
 echo
 if [[ -n "$port" ]]; then
-  echo // jCafe Module Porter: port-date: $now
+  echo // $Suite Module Porter: port-date: $now
 else
-  echo // jCafe Module Builder: build-date: $now
+  echo // $Suite Module Builder: build-date: $now
 fi
 echo
 
