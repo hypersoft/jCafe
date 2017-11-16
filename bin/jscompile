@@ -12,9 +12,6 @@ file-time() {
 now-time() {
   date "$DATE_FORMAT";
 }
-fixName.killDotDir() {
-  echo ${1##*.}
-}
 
 fixName.swapDots() {
   echo ${1//\//.}
