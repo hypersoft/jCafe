@@ -79,7 +79,6 @@ done;
   ${localHost}jscompile `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
 }
 
-echo
 echo // Enjoy: jCafe Custom Blend
 echo
 
