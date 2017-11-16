@@ -71,7 +71,7 @@ To fire-up the jCafe Module Builder issue the command at your unix-terminal
 from within the root directory of the jCafe project:
 
 ```bash
-bin/build > bin/build jCafe.js library
+bin/build jCafe.js library > build/jcafe.js
 ```
 
 If this feature is not suitable for your purpose, you can always implement
