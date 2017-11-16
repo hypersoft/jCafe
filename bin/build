@@ -16,6 +16,46 @@ compileOptions="";
 
 while [[ ${1:0:2} == -- ]]; do
 
+if [[ "${1}" =~ -(-help|h) ]]; then cat <<EOF
+$0 Help menu
+
+Using the following switches, allows you to blend your beans on-demand
+as a single command call. You can use shell scripts or other tools to
+generate your application profiles.
+
+--suite NAME OR CURRENT_NAME:NEW_NAME
+
+-  set compiler script suite name, this feature is optional.
+  
+--main SCRIPT
+
+-  include main script (call once, usually first or after --raw)
+
+--raw /path/to/raw/file
+
+-  include raw content. specify as many --raw opts as you need.
+
+--unit /path/to/file path.of.unit
+
+-  include a unit. specify as many --unit opts as you need.
+  
+--port /path/to/file: module.path.name, new.module.path.name
+
+-  port a module or unit via key-sync. specify as many --port opts as you need.
+-  this feature is like the unit feature, but you can change the path of the
+-  unit throughought the module, just as you can with the --suite NAME:NAME
+-  configuration.
+  
+OR YOU CAN CHOOSE: HOUSE-ROOT-BLEND (WHICH IS OUR FAVORITE RECIPE)
+
+$0 SCRIPT ROOT OR null: ROOT
+
+EOF
+
+# BASH MASTER 4 LIFE: SUCKA
+
+fi;
+
   if [[ ${1} == --suite ]]; then
     let noops=0
     SuiteOptions="$compileOptions $1 $2"; # compiler default: --suite jCafe
@@ -64,7 +104,7 @@ while [[ ${1:0:2} == -- ]]; do
     
   if [[ ${1} =~ -(-unit|u) ]]; then
     let noops=0
-    ${localHost}jscompile $SuiteOptions --unit "$2" "$3";
+    ${localHost}jscompile $SuiteOptions --unit "$2" "${3}";
     shift 3;
     continue;
   fi;
