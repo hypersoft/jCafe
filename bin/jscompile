@@ -42,7 +42,6 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
 
 now=$(now-time);
 stamp=$(date +%s);
-
 while [[ ${1:0:2} == -- ]]; do
 
   if [[ ${1} == --suite ]]; then
@@ -66,6 +65,14 @@ $(echo // jCafe Raw Resource: snapshot-date: $now)
 
 $(cat "$2" | trim);
 EOF
+    shift 2;
+    continue;
+  fi;
+
+  if [[ ${1} =~ -(-main|m) ]]; then
+    echo
+    echo // Main Module $Suite: build-date: $now
+    cat "$2" | trim;
     shift 2;
     continue;
   fi;
@@ -113,6 +120,3 @@ done | {
     cat
   fi;
 }
-echo
-echo // Enjoy: jCafe Custom Blend
-echo

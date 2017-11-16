@@ -10,17 +10,18 @@
 localHost=${0%/build}/;
 [[ $localHost == "/" ]] && localHost="";
 
-declare -i portLoop=0;
+declare -i noops=1 main=0;
 
 compileOptions="";
 
 while [[ ${1:0:2} == -- ]]; do
 
   if [[ ${1} == --suite ]]; then
+    let noops=0
     SuiteOptions="$compileOptions $1 $2"; # compiler default: --suite jCafe
     # this is the jCafe like name, where the modules are installed at runtime.
     # the port function of the compiler uses this for context info on porting.
-    shift; continue;
+    shift 2; continue;
   fi;
 
   if [[ ${1} == --port ]]; then
@@ -37,20 +38,34 @@ while [[ ${1:0:2} == -- ]]; do
     ${localHost}jscompile $compileOptions `${localHost}treecat "$origin" | ${localHost}jsfilter` || {
       echo "failed to jscompile $compileOptions";
     } >&2;
-    let portLoop++;
+    let noops=0
     shift 4;
     compileOptions="$SuiteOptions";
     continue;
   fi;
 
+  if [[ ${1} =~ -(-main|m) ]]; then
+    ((main == 0)) || {
+      echo "invalid arguments main has already been supplied";
+      exit 1;
+    } >&2;  
+    let noops=0
+    let main=1;
+    ${localHost}jscompile $SuiteOptions --main "$2" `${localHost}treecat "$origin" | ${localHost}jsfilter`
+    shift 2;
+    continue;
+  fi;
+
   if [[ ${1} =~ -(-raw|r) ]]; then
-      ${localHost}jscompile --raw "$2";
+    let noops=0
+    ${localHost}jscompile $SuiteOptions --raw "$2";
     shift 2;
     continue;
   fi;
     
   if [[ ${1} =~ -(-unit|u) ]]; then
-      ${localHost}jscompile --unit "$2" "$3";
+    let noops=0
+    ${localHost}jscompile $SuiteOptions --unit "$2" "$3";
     shift 3;
     continue;
   fi;
@@ -60,9 +75,11 @@ while [[ ${1:0:2} == -- ]]; do
   
 done;
 
-((portLoop)) && {
-  exit 0;
+((noops)) && { # no-ops handled: use default planning
+  ${localHost}jscompile `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
 }
 
-${localHost}jscompile `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
+echo
+echo // Enjoy: jCafe Custom Blend
+echo
 
