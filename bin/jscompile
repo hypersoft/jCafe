@@ -125,10 +125,10 @@ for arg; do
   cat $arg | output; 
 done | {
   if [[ -n "$port" ]]; then
-    echo
     sed s/[^.]$root./$port./g;
   else
-    echo
     cat
   fi;
+  echo
 }
+
