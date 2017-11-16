@@ -55,6 +55,7 @@ $0 SCRIPT ROOT OR null: ROOT
 EOF
 
 # BASH MASTER 4 LIFE: SUCKA
+exit # status
 
 fi;
 
