@@ -52,9 +52,9 @@ build SCRIPT ROOT OR null: ROOT
 
 EOF
 
-# BASH MASTER 4 LIFE: SUCKA
+# BASH/MAKE MASTER 4 LIFE: SUCKA
 
-  exit 1 #!/bin/bash/path
+  exit 1 #!/bin/bash -c script-lane
 
 fi;
 
