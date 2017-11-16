@@ -40,6 +40,9 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
             print a[i];}' /dev/stdin
 }
 
+now=$(now-time);
+stamp=$(date +%s);
+
 while [[ ${1:0:2} == -- ]]; do
 
   if [[ ${1} == --suite ]]; then
@@ -57,13 +60,23 @@ while [[ ${1:0:2} == -- ]]; do
     continue;
   fi;
 
+  if [[ ${1} =~ -(-raw|r) ]]; then
+    cat <<EOF
+$(echo // jCafe Raw Resource: snapshot-date: $now)
+
+$(cat "$2");
+EOF
+    shift 2;
+    continue;
+  fi;
+
   echo "Sorry, i don't know what $1 means" >&2;
   exit 1;
 
 done;
 
-now=$(now-time);
-stamp=$(date +%s);
+[[ $# == 0 ]] && exit;
+
 echo
 if [[ -n "$port" ]]; then
   echo // jCafe Module Porter: port-date: $now
