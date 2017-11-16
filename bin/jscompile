@@ -129,4 +129,5 @@ done | {
   else
     cat
   fi;
+  echo
 }
