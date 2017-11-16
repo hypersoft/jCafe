@@ -43,7 +43,7 @@ while [[ ${1:0:2} == -- ]]; do
 done;
 
 [[ -n "$origin" ]] && {
-  exit $?;
+  exit 0;
 }
 
 ${localHost}jscompile `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
