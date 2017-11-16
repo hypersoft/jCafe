@@ -7,17 +7,33 @@
 
 # sample: build jCafe from the root directory: bin/build jCafe.js library
 
-compileOptions="";
+localHost=${0%/build}/;
+[[ $localHost == "/" ]] && localHost="";
 
+compileOptions="";
 while [[ ${1:0:2} == -- ]]; do
+
+  if [[ ${1} == --suite ]]; then
+    SuiteOptions="$compileOptions $1 $2"; # compiler default: jCafe
+    # this is the jCafe like name, where the modules are comming from.
+    # the port function of the compiler uses this for context info.
+    shift; continue;
+  fi;
 
   if [[ ${1} == --port ]]; then
     [[ "$2" =~ \:$ ]] || {
-      echo invalid arguments expected new.root: current.root
+      echo "invalid arguments expected /path/to/module: module.path, new.module.path";
       exit 1;
     } >&2;
-    compileOptions+="$1 $2 $3 ";
-    shift 3;
+    [[ "$3" =~ \,$ ]] || {
+      echo "invalid arguments expected /path/to/module: module.path.in.file, new.module.path.in.file";
+      exit 1;
+    } >&2;
+    origin="${2/:/}" oldModule="${3/,/}" newModule="$4";
+    compileOptions="$SuiteOptions --port $oldModule: $newModule";
+    ${localHost}jscompile $compileOptions `${localHost}treecat "$origin" | ${localHost}jsfilter`
+    shift 4;
+    compileOptions="$SuiteOptions";
     continue;
   fi;
 
@@ -26,7 +42,9 @@ while [[ ${1:0:2} == -- ]]; do
   
 done;
 
-localHost=${0%/build};
+[[ -n "$origin" ]] && {
+  exit $?;
+}
 
-$localHost/jscompile $compileOptions `(echo "$1"; $localHost/treecat "$2") | $localHost/jsfilter`
+${localHost}jscompile `(echo "$1"; ${localHost}treecat "$2") | ${localHost}jsfilter`
 

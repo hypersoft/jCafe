@@ -2,6 +2,8 @@
 
 DATE_FORMAT="--rfc-3339=seconds";
 
+Suite=jCafe;
+
 file-time() {
   echo [source-checkpoint: $(date $DATE_FORMAT -r $1)];
 }
@@ -18,7 +20,7 @@ fixName.swapDots() {
 }
 
 fixName.swapLibrary() {
-  echo ${1/library/jCafe}
+  echo ${1/library/${Suite}}
 }
 
 fixName.killExtension() {
@@ -40,12 +42,17 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
 
 while [[ ${1:0:2} == -- ]]; do
 
+  if [[ ${1} == --suite ]]; then
+    Suite="$2";
+    shift 2; continue;
+  fi;
+  
   if [[ ${1} == --port ]]; then
     [[ "$2" =~ \:$ ]] || {
-      echo invalid arguments expected new.root: current.root
+      echo invalid arguments expected /path/to/module: module.path, new.module.path
       exit 1;
     } >&2;
-    port="${2/:/}" root="$3";
+    port="${3}" root="${2/:/}";
     shift 3;
     continue;
   fi;
@@ -58,14 +65,19 @@ done;
 now=$(now-time);
 stamp=$(date +%s);
 echo
-echo // jCafe Module Builder: build-date: $now
+if [[ -n "$port" ]]; then
+  echo // jCafe Module Porter: port-date: $now
+else
+  echo // jCafe Module Builder: build-date: $now
+fi
 echo
+
 echo var jCafeBuildDate = $stamp\; // \(${#@} units included\)
 
 for arg; do
   echo
   if [[ -n "$port" ]]; then
-    echo // Unit: Port.$root.`fixName $arg` $(file-time $arg)
+    echo // Unit: Port: `fixName $arg` $(file-time $arg)
   else
     echo // Unit: `fixName $arg` $(file-time $arg)
   fi
