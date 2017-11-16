@@ -56,7 +56,7 @@ EOF
 
 # BASH MASTER 4 LIFE: SUCKA
 
-  exit 1 # status
+  exit 1 #!/bin/bash/path
 
 fi;
 

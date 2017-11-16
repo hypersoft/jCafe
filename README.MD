@@ -72,14 +72,17 @@ from within the root directory of the jCafe project:
 
 ```bash
 bin/build jCafe.js library > build/jcafe.js
+
+# or if you are ready to do some real-blending
+bin/build -h|--help # to get started with the house blender.
 ```
+
+You should file an issue on the builder if you find one. Thanks.
 
 If this feature is not suitable for your purpose, you can always implement
 your own strategy for building your jCafe distribution. Some people like to
 use npm, gulp, bower, etc; however Hypersoft-Systems: U.-S.-A. does not utilize
 any such technology for development.
-
-Perhaps in the future we may see a way to compile lists directly with an option.
 
 The jCafe build system is a quick-put-together due to time constraints.
 A better Unix builder could be made, and might be in the future-time; what is
