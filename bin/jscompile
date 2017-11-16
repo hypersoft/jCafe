@@ -51,7 +51,7 @@ function output {
 
 now=$(now-time);
 stamp=$(date +%s);
-while [[ ${1:0:2} == -- ]]; do
+while [[ ${1:0:1} == - ]]; do
   if [[ ${1} == --suite ]]; then
     Suite="$2";
     if [[ "$Suite" =~ .+:.+ ]]; then
