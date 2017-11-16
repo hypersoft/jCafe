@@ -95,7 +95,7 @@ while [[ ${1:0:1} == - ]]; do
   fi;
   
 
-  echo "Sorry, i don't know what $1 means" >&2;
+  echo "Sorry, jscompile has no knowledge of what $1 means" >&2;
   exit 1;
 
 done

@@ -111,7 +111,7 @@ fi;
     continue;
   fi;
 
-  echo "Sorry, i don't know what $1 means" >&2;
+  echo "Sorry, build has no knowldege of what $1 means" >&2;
   exit 1;
   
 done;
