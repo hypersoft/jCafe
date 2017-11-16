@@ -71,13 +71,15 @@ To fire-up the jCafe Module Builder issue the command at your unix-terminal
 from within the root directory of the jCafe project:
 
 ```bash
-bin/build > build/jcafe.js
+bin/build > bin/build jCafe.js library
 ```
 
 If this feature is not suitable for your purpose, you can always implement
 your own strategy for building your jCafe distribution. Some people like to
 use npm, gulp, bower, etc; however Hypersoft-Systems: U.-S.-A. does not utilize
 any such technology for development.
+
+Perhaps in the future we may see a way to compile lists directly with an option.
 
 The jCafe build system is a quick-put-together due to time constraints.
 A better Unix builder could be made, and might be in the future-time; what is

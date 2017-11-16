@@ -1,1 +1,12 @@
-bin/jscompile `(echo jCafe.js; bin/treecat library) | bin/jsfilter`
+#!/bin/bash
+
+# let 1 = HeadScript
+# let 2 = BodyPath
+# for each directory in BodyPath: cat jsfiles
+# for each directory == module, for each file = unit
+# result: library.module.unit/module++
+
+# sample: build jCafe from the root directory: bin/build jCafe.js library
+
+bin/jscompile `(echo "$1"; bin/treecat "$2") | bin/jsfilter`
+
