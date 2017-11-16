@@ -19,7 +19,7 @@ compileOptions="";
 while [[ ${1:0:2} == -- ]]; do
 
 if [[ "${1}" =~ -(-help|h) ]]; then cat <<EOF
-$0 Help menu
+build Help menu
 
 Using the following switches, allows you to blend your beans on-demand
 as a single command call. You can use shell scripts or other tools to
@@ -50,7 +50,7 @@ generate your application profiles.
   
 OR YOU CAN CHOOSE: HOUSE-ROOT-BLEND (WHICH IS OUR FAVORITE RECIPE)
 
-$0 SCRIPT ROOT OR null: ROOT
+build SCRIPT ROOT OR null: ROOT
 
 EOF
 
