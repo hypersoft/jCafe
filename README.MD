@@ -77,7 +77,10 @@ bin/build jCafe.js library > build/jcafe.js
 bin/build -h|--help # to get started with the house blender.
 ```
 
-Talk about franchise licensing opportunities, `build --suite jCafe:Shop`
+Talk about franchise licensing opportunities:
+
+ `bin/build --suite jCafe:Shop --main jCafe.js library`
+
 You should file an issue on the blender if you find one. Thanks.
 
 If this feature is not suitable for your purpose, you can always implement
