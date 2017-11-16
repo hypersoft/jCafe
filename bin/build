@@ -41,6 +41,10 @@ generate your application profiles.
 -  this feature is like the unit feature, but you can change the root path of
 -  the unit throughought the module.
   
+IN ADDITION to the bove switches, you may terminate the command with:
+
+build ... SCRIPT ROOT # synonym for --main SCRIPT ROOT
+
 OR YOU CAN CHOOSE: HOUSE-ROOT-BLEND (WHICH IS OUR FAVORITE RECIPE)
 
 build SCRIPT ROOT OR null: ROOT
