@@ -7,5 +7,6 @@
 
 # sample: build jCafe from the root directory: bin/build jCafe.js library
 
-bin/jscompile `(echo "$1"; bin/treecat "$2") | bin/jsfilter`
+localHost=${0%/build};
+$localHost/jscompile `(echo "$1"; $localHost/treecat "$2") | $localHost/jsfilter`
 
