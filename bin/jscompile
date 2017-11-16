@@ -88,7 +88,7 @@ while [[ ${1:0:1} == - ]]; do
 
   if [[ ${1} =~ -(-unit|u) ]]; then
     file="${2%:}"
-    echo // Unit: $Suite.$3 $(file-time ${file})
+    echo // Unit: `fixName $file` $(file-time ${file})
     echo
     cat "$file" | output;
     shift 3;
