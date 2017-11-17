@@ -120,7 +120,7 @@ done;
     echo "invalid arguments main has already been supplied";
     exit 1;
   } >&2;  
-  $0 --main "$1" "$2";
+  $0 $SuiteOptions --main "$1" "$2";
   exit $?
 }
 

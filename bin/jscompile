@@ -37,7 +37,7 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
 function output {
   echo;
   if [[ -n "$from" ]]; then
-   trim | sed s/$from/$to/g;
+   trim | sed s/$from/$to/g
   else
    trim;
   fi;
