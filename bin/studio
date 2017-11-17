@@ -79,7 +79,7 @@ opt.set-version() {
 
   cat README.MD | {
     read line;
-    echo "# jCafe $RELEASE $VERSION"
+    echo "## jCafe $RELEASE $VERSION"
     cat
   } > README.MD.new;
 
