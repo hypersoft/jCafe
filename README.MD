@@ -1,4 +1,4 @@
-# jCafe Honeyblend (RC3) v0.27
+## jCafe Honeyblend (RC3) v0.27
 
 ### README
 
