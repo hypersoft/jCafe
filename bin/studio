@@ -1,8 +1,21 @@
 #!/bin/bash
 
-[[ "$1" == --set-version ]] && {
+shopt -s extglob;
 
-  shift;
+opt.commit-studio() {
+  opt.commit "x-jcafe-studio: $1" $0;
+}
+
+opt.commit() {
+  # message files...
+  message=$1; shift;
+  git add "${@}";
+  git commit -m "$message";
+  return $#;
+}
+
+opt.set-version() {
+
   cat README.MD | {
     read line;
     echo "# jCafe $1"
@@ -22,6 +35,23 @@
 
   cp -u jCafe.js.new jCafe.js;
   rm jCafe.js.new;
+
+  return 1 # == arguments processed
   
 }
 
+declare optionContext=${0##*/};
+while [[ "${1}" =~ ^(--|-)([a-zA-Z0-9-]+)(=|[$IFS]+)?(.+)?$ ]]; do
+  if declare -f opt.${BASH_REMATCH[2]} > /dev/null; then shift;
+    declare switchId=${BASH_REMATCH[2]} optValue=${BASH_REMATCH[4]};
+    if [[ -n "$optValue" ]]; then opt.$switchId "$optValue" "$@";
+    else opt.$switchId "$@"; fi;
+    declare -i args=$?;
+    [[ -n "$optValue" ]] && let args--; # if the value taxied, post the fare
+    if ((args != 0)); then shift $args; continue; fi;
+  else
+    echo "Sorry, $optionContext has no knowledge of what "$1" means" >&2;
+    echo "You might have joined an option value to an option switch without a field separator of IFS or =" >&2;
+    exit 1;
+  fi;
+done;
