@@ -101,7 +101,7 @@ while [[ ${1:0:1} == - ]]; do
     echo -n "Main Module ${Suite}: build-date: $now"
     fi;
     echo " **/"
-    cat "$2" | output;
+    cat "$2" | output
     shift 2;
     continue;
   fi;
@@ -148,7 +148,7 @@ for arg; do
   cat $arg | output; 
 done | {
   if [[ -n "$port" ]]; then
-    sed s/[^.]$root./$port./g;
+    sed s/\\([^.]\\)$root./\\1$port./g
   else
     cat
   fi;
