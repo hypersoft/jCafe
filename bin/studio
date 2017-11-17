@@ -1,0 +1,27 @@
+#!/bin/bash
+
+[[ "$1" == --set-version ]] && {
+
+  shift;
+  cat README.MD | {
+    read line;
+    echo "# jCafe $1"
+    cat
+  } > README.MD.new;
+
+  cp -u README.MD.new README.MD;
+  rm README.MD.new;
+
+  cat jCafe.js | {
+    read line;
+    echo "$line"
+    read line;
+    echo " * javascript:jCafe - WebScript Engineering Toolkit                    ($1)";
+    cat;
+  } > jCafe.js.new;
+
+  cp -u jCafe.js.new jCafe.js;
+  rm jCafe.js.new;
+  
+}
+
