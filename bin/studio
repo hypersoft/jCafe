@@ -1,5 +1,19 @@
 #!/bin/bash
 
+. STATS;
+
+LINE_BUFFER="                                                                                ";
+
+STAT_NAMES="RELEASE VERSION";
+
+opt.write-stats() {
+  opt.dump-stats > STATS;
+}
+
+opt.dump-stats() {
+  declare -p $STAT_NAMES | sed "s/declare -- //g";
+} 2>/dev/null;
+
 shopt -s extglob;
 
 opt.commit-jcafe() {
@@ -40,11 +54,33 @@ opt.commit() {
   return $#;
 }
 
+
+opt.get-release-name() {
+  echo "$pkgRelName";
+}
+
+setReleaseName() {
+  true;
+}
+
 opt.set-version() {
+
+  if [[ $# == 0 ]]; then
+    read -p "Enter Version: " -i $VERSION VERSION;
+  else
+    VERSION=$1;    
+  fi;
+  if [[ $# == 0 || $# == 1 ]]; then
+    read -p "Enter Release Name: " -i $RELEASE RELEASE;  
+  else
+    RELEASE="$2";  
+  fi;
+  
+  opt.write-stats;
 
   cat README.MD | {
     read line;
-    echo "# jCafe $1"
+    echo "# jCafe $RELEASE $VERSION"
     cat
   } > README.MD.new;
 
@@ -55,13 +91,18 @@ opt.set-version() {
     read line;
     echo "$line"
     read line;
-    echo " * javascript:jCafe - WebScript Engineering Toolkit                    ($1)";
+    out1=" * javascript:jCafe - $RELEASE"
+    out2="($VERSION)"
+    padding=${LINE_BUFFER:1:$((${#LINE_BUFFER} - ${#out1} - ${#out2}))};
+    echo "$out1$padding$out2";
     cat;
   } > jCafe.js.new;
 
   cp -u jCafe.js.new jCafe.js;
   rm jCafe.js.new;
 
+  $0 --commit "Checkpoint: $VERSION; $RELEASE" README.MD jCafe.js STATS;  
+  
   return 1 # == arguments processed
   
 }
