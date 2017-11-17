@@ -9,6 +9,8 @@ compileOptions="";
 
 boot="$@";
 
+Suite=jCafe
+
 while [[ ${1:0:1} == - ]]; do
 
 if [[ "${1}" =~ -(-help|h) ]]; then cat <<EOF
@@ -59,6 +61,8 @@ fi;
 
   if [[ ${1} == --suite ]]; then
     let noops=0
+    Suite="${2#*:}"
+    [[ -z "$Suite" ]] && Suite=$2;
     SuiteOptions="$1 $2"; # compiler default: --suite jCafe
     # this is the jCafe like name, where the modules are installed at runtime.
     shift 2; continue;
@@ -90,7 +94,7 @@ fi;
     } >&2;  
     let noops=0
     let main=1;
-    ${localHost}jscompile $SuiteOptions --flavor "$3" --main "$2" `${localHost}treecat "$3" | ${localHost}jsfilter`
+    ${localHost}jscompile $SuiteOptions --flavor "$3" --main "$2" `${localHost}treecat "$3" | ${localHost}jsfilter` | sed "s/ \\* javascript:$Suite/ \\* javascript:jCafe/";
     echo
     shift 2;
     continue;
