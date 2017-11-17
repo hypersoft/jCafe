@@ -129,5 +129,5 @@ echo
 echo build $boot\;
 printf \
   "\n%s\n*/" \
-"                                                --Hypersoft-Systems: U.-S.-A."
+"                                                 --Hypersoft-Systems: U.-S.-A."
 
