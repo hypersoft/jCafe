@@ -42,7 +42,6 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
 
 function swap {
     sed "s/${1}/${2}/g";
-echo    sed "s/${1}/${2}/g" >&2;
 }
 
 function output {
