@@ -22,6 +22,7 @@ opt.commit-blender() {
 
 opt.commit-readme() {
   opt.commit "${*-Wise Franchise Guys}" README.MD;
+  [[ $# == 0 ]] && git commit --amend;
   return $#;
 }
 
