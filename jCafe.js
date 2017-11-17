@@ -1,5 +1,5 @@
 /**
- * javascript:jCafe - WebScript Engineering Toolkit                     (v0.22)
+ * javascript:jCafe - WebScript Engineering Toolkit                    (v0.26)
  *
  * (C) Hypersoft-Systems: U.-S.-A. ~11-12-2017: NOW-TIME
  *                         <hypersoft.systems@gmail.com>

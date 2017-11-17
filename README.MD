@@ -1,4 +1,4 @@
-# jCafe v0.25
+# jCafe v0.26
 
 ### README
 
