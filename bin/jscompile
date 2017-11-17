@@ -148,7 +148,7 @@ for arg; do
   cat $arg | output; 
 done | {
   if [[ -n "$port" ]]; then
-    sed s/\\([^.]\\)$root./\\1$port./g
+    sed s/\\([^\\.]\\)$root\\./\\1$port./g
   else
     cat
   fi;
