@@ -35,6 +35,7 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
 }
 
 function output {
+  echo;
   if [[ -n "$from" ]]; then
    trim | sed s/$from/$to/g;
   else
@@ -46,6 +47,15 @@ now=$(now-time);
 stamp=$(date +%s);
 
 while [[ ${1:0:1} == - ]]; do
+
+  if [[ ${1} == --suite ]]; then
+    Suite="$2";
+    if [[ "$Suite" =~ .+:.+ ]]; then
+      from="${Suite%:*}" to="${Suite#*:}"
+    fi;
+    shift 2; continue;
+  fi;
+
   if [[ ${1} == --suite ]]; then
     Suite="$2";
     if [[ "$Suite" =~ .+:.+ ]]; then
@@ -66,21 +76,21 @@ while [[ ${1:0:1} == - ]]; do
 
   if [[ ${1} =~ -(-raw|r) ]]; then
     echo // jCafe Raw Resource: snapshot-date: $now
-    echo
     cat "$2" | output;
     shift 2;
     continue;
   fi;
 
   if [[ ${1} =~ -(-main|m) ]]; then
+    echo var jCafeBuildDate = $stamp\;
     echo
+    echo -n "/** "
     if [[ -n "$from" ]]; then
-    echo // Mock Module mocking: $from as $to: build-date: $now
-    echo
+    echo -n "Mock Module mocking: $from as $to: build-date: $now"
     else
-    echo // Main Module ${Suite}: build-date: $now
-    echo
+    echo -n "Main Module ${Suite}: build-date: $now"
     fi;
+    echo " **/"
     cat "$2" | output;
     shift 2;
     continue;
@@ -89,13 +99,11 @@ while [[ ${1:0:1} == - ]]; do
   if [[ ${1} =~ -(-unit|u) ]]; then
     file="${2%:}"
     echo // Origin: `fixName $file` $(file-time ${file})
-    echo
     cat "$file" | output;
     shift 3;
     continue;
   fi;
   
-
   echo "Sorry, jscompile has no knowledge of what $1 means" >&2;
   exit 1;
 
@@ -111,16 +119,20 @@ else
 fi
 echo
 
-echo var jCafeBuildDate = $stamp\; // \(${#@} units included\)
+echo '/**' \(${#@} sources included\)
+echo
+for n in "$@"; do
+  printf "%s: %s\n" $(fixName $n) $n
+done;
+echo
+echo '**/'
 
 for arg; do
   echo
   if [[ -n "$port" ]]; then
     echo // Port Origin: `fixName $arg`, $port $(file-time $arg)
-    echo
   else
     echo // Origin: `fixName $arg` $(file-time $arg)
-    echo
   fi
   cat $arg | output; 
 done | {
@@ -129,6 +141,5 @@ done | {
   else
     cat
   fi;
-  echo
 }
 
