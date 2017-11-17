@@ -54,13 +54,12 @@ opt.commit() {
   return $#;
 }
 
-
 opt.get-release-name() {
-  echo "$pkgRelName";
+  echo "$RELEASE";
 }
 
-setReleaseName() {
-  true;
+opt.get-version() {
+  echo "$VERSION";
 }
 
 opt.set-version() {
