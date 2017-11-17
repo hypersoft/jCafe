@@ -76,7 +76,7 @@ while [[ "${1}" =~ ^(--|-)([a-zA-Z0-9-]+)(=|[$IFS]+)?(.+)?$ ]]; do
     if ((args != 0)); then shift $args; continue; fi;
   else
     echo "Sorry, $optionContext has no knowledge of what "$1" means" >&2;
-    echo "You might have joined an option value to an option switch without a field separator of IFS or =" >&2;
+    echo "You might have joined an option value to an option switch without an \$IFS separator or =" >&2;
     exit 1;
   fi;
 done;
