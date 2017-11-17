@@ -37,6 +37,16 @@ var jCafe = {/* Fresh Coffee Served Daily */};
 
 var rt = Object.create(null);
 
+// Only works in Chrome and FireFox, does not work in IE:
+var setPrototypeOf = Object.setPrototypeOf || function(obj, proto) {
+  obj.__proto__ = proto;
+  return obj; 
+}
+
+var getPrototypeOf = Object.getPrototypeOf || function(obj) {
+  return obj.__proto__; 
+}
+
 // a not-too-cheap property writer
 function defineProperty(o, p, n, v) {
   // p = "hidden fixed component gateway": specification-list
@@ -170,7 +180,7 @@ var set = function (name, components, builder) {
 jCafe = function(n) {
   // jCafe(n) will get(n) or set(parameters...); for the keyword: ((new)?jCafe.set:jCafe.get)(...)
   if (this.constructor !== jCafe) return get(n);
-  else Object.setPrototypeOf(this, set.apply(jCafe, arguments));
+  else setPrototypeOf(this, set.apply(jCafe, arguments));
 }
 
 // this is a system-value
@@ -186,6 +196,8 @@ defineGateway(jCafe, "defineGateway", defineGateway); // read-only: {get and/or 
 defineComponent(jCafe, "defineUtility", defineUtility); // hidden, read-only
 defineComponent(jCafe, "defineSystem", defineSystem); // hidden, read-only, unconfigurable
 defineComponent(jCafe, "defineConsant", defineConstant); // read-only, unconfigurable
+defineComponent(jCafe, "getPrototypeOf", getPrototypeOf); // platform filler: Object.getPrototype
+defineComponent(jCafe, "setPrototypeOf", setPrototypeOf); // platform filler: Object.setPrototype
 
 // make rt like a module
 var jCafeRuntimeModuleName = 'jcafe';
