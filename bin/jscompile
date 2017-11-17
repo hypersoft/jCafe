@@ -4,6 +4,7 @@ shopt -s extglob;
 DATE_FORMAT="--rfc-3339=seconds";
 
 Suite=jCafe from="" to="";
+Flavor="JS COMPILER NO FLAVOR";
 
 file-time() {
   echo [source-checkpoint: $(date $DATE_FORMAT -r $1)];
@@ -21,6 +22,11 @@ fixName.killExtension() {
   echo ${1%.js}
 }
 
+enhanceFlavor() {
+flavinoid=${Flavor%/*};
+  swap "$flavinoid\\." "$flavinoid: "
+}
+
 fixName() {
   fixName.swapDots $(fixName.killExtension ${1#./})
 }
@@ -34,10 +40,15 @@ awk '{a[NR]=$0;if($0 && !s)s=NR;}
             print a[i];}' /dev/stdin
 }
 
+function swap {
+    sed "s/${1}/${2}/g";
+echo    sed "s/${1}/${2}/g" >&2;
+}
+
 function output {
   echo;
   if [[ -n "$from" ]]; then
-   trim | sed s/$from/$to/g
+   trim | swap $from $to
   else
    trim;
   fi;
@@ -68,8 +79,15 @@ while [[ ${1:0:1} == - ]]; do
   fi;
 
   if [[ ${1} =~ -(-raw|r) ]]; then
+    Flavor="$2";
     echo // jCafe Raw Resource: snapshot-date: $now
     cat "$2" | output;
+    shift 2;
+    continue;
+  fi;
+
+  if [[ ${1} =~ -(-flavor|f) ]]; then
+    Flavor="$2";
     shift 2;
     continue;
   fi;
@@ -90,7 +108,8 @@ while [[ ${1:0:1} == - ]]; do
   fi;
 
   if [[ ${1} =~ -(-unit|u) ]]; then
-    file="${2%:}"
+    Flavor="$2";
+    file="${2}"
     echo // Origin: `fixName $file` $(file-time ${file})
     cat "$file" | output;
     shift 3;
@@ -123,9 +142,9 @@ echo '**/'
 for arg; do
   echo
   if [[ -n "$port" ]]; then
-    echo // Port Origin: `fixName $arg`, $port $(file-time $arg)
+    echo // Port Origin: `fixName $arg | enhanceFlavor`, $port $(file-time $arg)
   else
-    echo // Origin: `fixName $arg` $(file-time $arg)
+    echo // Origin: `fixName $arg | enhanceFlavor` $(file-time $arg)
   fi
   cat $arg | output; 
 done | {
