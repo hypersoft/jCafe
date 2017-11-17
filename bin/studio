@@ -6,12 +6,20 @@ opt.commit-studio() {
   opt.commit "x-jcafe-studio: $*" $0;
 }
 
+opt.commit-blender() {
+  opt.commit "x-jcafe-system/profile-builder: $*" bin/{build,jscompile};
+}
+
+opt.commit-readme() {
+  opt.commit "x-jcafe-readme: ${*-:Wise Franchise Guys}" README.MD;
+}
+
 opt.commit() {
   # message files...
-  if git add "${@:2:$#}"; then
-    git commit -m "$1";
+  if git add -v "${@:2:$#}"; then
+    git commit -vm "$1";
   else
-    echo commit failed to git add \""${@:2:$#}"\";
+    exit $?;
   fi;
   return $#;
 }
