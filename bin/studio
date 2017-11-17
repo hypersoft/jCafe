@@ -3,14 +3,16 @@
 shopt -s extglob;
 
 opt.commit-studio() {
-  opt.commit "x-jcafe-studio: $1" $0;
+  opt.commit "x-jcafe-studio: $*" $0;
 }
 
 opt.commit() {
   # message files...
-  message=$1; shift;
-  git add "${@}";
-  git commit -m "$message";
+  if git add "${@:2:$#}"; then
+    git commit -m "$1";
+  else
+    echo commit failed to git add \""${@:2:$#}"\";
+  fi;
   return $#;
 }
 
