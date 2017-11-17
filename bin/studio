@@ -2,16 +2,31 @@
 
 shopt -s extglob;
 
+opt.commit-jcafe() {
+  opt.commit "x-jcafe: ${*-update}" jCafe.js;
+  [[ $# == 0 ]] && git commit --amend;
+  return $#;
+}
+
 opt.commit-studio() {
-  opt.commit "x-jcafe-studio: $*" $0;
+  opt.commit "x-jcafe-studio: ${*-update}" $0;
+  [[ $# == 0 ]] && git commit --amend;
+  return $#;
 }
 
 opt.commit-blender() {
-  opt.commit "x-jcafe-system/profile-builder: $*" bin/{build,jscompile};
+  opt.commit "x-jcafe-blender: ${*-update}" bin/{build,jscompile};
+  [[ $# == 0 ]] && git commit --amend;
+  return $#;
 }
 
 opt.commit-readme() {
-  opt.commit "x-jcafe-readme: ${*-:Wise Franchise Guys}" README.MD;
+  opt.commit "${*-Wise Franchise Guys}" README.MD;
+  return $#;
+}
+
+opt.amend-commit() {
+  git commit --amend;
 }
 
 opt.commit() {
@@ -65,3 +80,4 @@ while [[ "${1}" =~ ^(--|-)([a-zA-Z0-9-]+)(=|[$IFS]+)?(.+)?$ ]]; do
     exit 1;
   fi;
 done;
+
