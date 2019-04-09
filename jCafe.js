@@ -40,18 +40,18 @@ var rt = Object.create(null);
 // Only works in Chrome and FireFox, does not work in IE:
 var setPrototypeOf = Object.setPrototypeOf || function(obj, proto) {
   obj.__proto__ = proto;
-  return obj; 
+  return obj;
 }
 
 var getPrototypeOf = Object.getPrototypeOf || function(obj) {
-  return obj.__proto__; 
+  return obj.__proto__;
 }
 
 // a not-too-cheap property writer
 function defineProperty(o, p, n, v) {
   // p = "hidden fixed component gateway": specification-list
   if (arguments.length === 3)
-    return defineProperty(o, "default", (n = p), v);    
+    return defineProperty(o, "default", (n = p), v);
   var type; // gotchas
   if ((type = typeof o) !== 'object' && type !== 'function') throw new TypeError(
     "1st parameter type error: expected property host; got: "+type);
@@ -136,6 +136,7 @@ function protectedRootName(name) {
 var protectedUnitNames = protectedJCafeUnitNames.concat(
   protectedJavascriptUnitNames
 );
+
 function protectedUnitName(name) {
   return indexContains(protectedUnitNames, name);
 }
@@ -177,14 +178,15 @@ var set = function (name, components, builder) {
 };
 
 // YES: WRITE TO jCafe
-jCafe = function(n) {
+jCafe = function jCafe(n) {
   // jCafe(n) will get(n) or set(parameters...); for the keyword: ((new)?jCafe.set:jCafe.get)(...)
   if (this.constructor !== jCafe) return get(n);
   else setPrototypeOf(this, set.apply(jCafe, arguments));
 }
 
-// this is a system-value
-defineSystem(jCafe, "prototype", Object.freeze({constructor: jCafe }));
+jCafe.prototype = {
+    constructor: jCafe
+}
 
 // link runtime with jCafe
 defineComponent(jCafe, "rt", rt);
@@ -192,10 +194,10 @@ defineComponent(rt, "jCafe", jCafe);
 
 // make our define systems a public interface
 defineComponent(jCafe, "defineComponent", defineComponent); // read-only
-defineGateway(jCafe, "defineGateway", defineGateway); // read-only: {get and/or set}
+defineComponent(jCafe, "defineGateway", defineGateway); // read-only: {get and/or set}
 defineComponent(jCafe, "defineUtility", defineUtility); // hidden, read-only
 defineComponent(jCafe, "defineSystem", defineSystem); // hidden, read-only, unconfigurable
-defineComponent(jCafe, "defineConsant", defineConstant); // read-only, unconfigurable
+defineComponent(jCafe, "defineConstant", defineConstant); // read-only, unconfigurable
 defineComponent(jCafe, "getPrototypeOf", getPrototypeOf); // platform filler: Object.getPrototype
 defineComponent(jCafe, "setPrototypeOf", setPrototypeOf); // platform filler: Object.setPrototype
 
@@ -219,7 +221,7 @@ var getUnitParentName = function(n) {
   return stack.join(unitSeparator);
 }
 
-var getUnitRootName function(n) { return n.split(unitSeparator)[0]; }
+var getUnitRootName = function(n) { return n.split(unitSeparator)[0]; }
 
 var getUnitName = function(n) {
   var stack = n.split(unitSeparator);
@@ -248,8 +250,7 @@ jCafe.module = function(n) {
 // used internally, this one fires up the module & unit builder
 var compile = function (name) {
   var actual = paths[name];
-  if (actual === undefined)
-     throw "unit identifier  '"+ name + "' has no definition";
+  if (actual === undefined) throw "unit identifier  '"+ name + "' has no definition";
   var components = actual.components;
   var tool = actual.builder;
   var module = getUnitParent(name);
@@ -279,7 +280,7 @@ jCafe.link = function (name, ref) {
 jCafe.link("js.global", loader);
 
 return /* PERCOLATOR */;
-  
+
 })/* load: jCafe Express */(this, Object.create(null), Object.create(null));
 
 
@@ -300,8 +301,7 @@ return /* PERCOLATOR */;
       return console;
     }
   );
-  
-  return /* BLEND: READY */;
-  
-})();
 
+  return /* BLEND: READY */;
+
+})();
